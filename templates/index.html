@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap" rel="stylesheet">
+    <title>JayZam</title>
+</head>
+<body>
+    <! Navigation bar>
+    <div class="navigation">
+        <a href="index.html">
+            <img src="{{url_for('static', filename='images/icon.png')}}" width="50" height="50"/>
+        </a>
+        <a href="about.html">
+            <h2>About</h2>
+        </a>
+    </div>
+    <div class="content">
+        <div class="visualizer-left">
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+        </div>
+        <button id="record" class="notRec" onclick="record()">Record</button>
+        <div class="visualizer-right">
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+            <div class="listener"></div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>Made by David Qing</p>
+    </div>
+
+    <script type="text/javascript" src="{{url_for('static', filename='scripts/script.js')}}"></script>
+
+</body>
+</html>

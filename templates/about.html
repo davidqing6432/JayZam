@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap" rel="stylesheet">
+    <script src="{{url_for('static', filename='scripts/script.js')}}"></script>
+    <title>Description | JayZam</title>
+</head>
+<body>
+    <! Navigation bar>
+    <div class="navigation">
+        <a href="index.html">
+            <img src="{{url_for('static', filename='images/icon.png')}}" width="50" height="50"/>
+        </a>
+        <a href="about.html">
+            <h2>About</h2>
+        </a>
+    </div>
+    <div class="description">
+        <h1>Welcome to JayZam!</h1>
+        <div class="description-content">
+            <p>
+                This website is made by David Qing! 
+                JayZam is a music recognition software that analyzes an audio file, and identifies what Jay-Z song it sounds most like.
+                The project does so using machine learning; particularly classification!
+                The website is built using HTML, CSS, JavaScript, and Python for the backend. 
+                To use this website, go to the main page by clicking on the logo in the top left, and click the record button.
+                Then, use your microphone to supply some audio, and see what song your audio sounds most like!
+            </p>
+            <div class="tech">
+                <div class="icons">
+                    <img class="image" src="{{url_for('static', filename='images/css.svg')}}" height="300" data-index="0" data-status="active"/>
+                    <img class="image" src="{{url_for('static', filename='images/js.svg')}}" height="300" data-index="1" data-status="inactive"/>
+                    <img class="image" src="{{url_for('static', filename='images/html.svg')}}" height="300" data-index="2" data-status="inactive"/>
+                    <img class="image" src="{{url_for('static', filename='images/py.svg')}}" height="300" data-index="3" data-status="inactive"/>
+                </div>
+            </div>
+            <div></div>
+            <div class="icon-nav">
+                <button onclick="changeImage(-1)"></button>
+                <button onclick="changeImage(1)"></button>
+            </div>
+        </div>
+
+    </div>
+    <div class="footer">
+        <p>Made by David Qing</p>
+    </div>
+</html>
