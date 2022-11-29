@@ -5,3 +5,4 @@ clean
 templates/.DS_Store
 cleaned_data/
 augmented_data/
+wavfiles/
