@@ -79,31 +79,19 @@ function visualize(stream) {
     source.connect(analyser);
     renderFrame()
     function renderFrame() {
-        // Update our frequency data array with the latest frequency data
         analyser.getByteFrequencyData(dataArray);
         for( let i = 0; i < bufferLength; i++ ) {
-            // Since the frequency data array is 1024 in length, we don't want to fetch
-            // the first NBR_OF_BARS of values, but try and grab frequencies over the whole spectrum
-            // fd is a frequency value between 0 and 255
             const fd = dataArray[i];
-            // Fetch the bar DIV element
             const visualizer = visualizerArray[i];
             if( !visualizer ) {
                 continue;
             }
-
-            // If fd is undefined, default to 0, then make sure fd is at least 4
-            // This will make make a quiet frequency at least 4px high for visual effects
             const visualizerHeight = Math.floor(Math.max(5, fd || 0)/5);
             visualizer.style.height = visualizerHeight + "vw";
 
         }
-
-        // At the next animation frame, call ourselves
         window.requestAnimationFrame(renderFrame);
-
     }
-
 }
 
 
