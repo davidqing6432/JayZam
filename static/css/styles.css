@@ -29,8 +29,9 @@ body {
 
 /* The recording button, any other things that will be added to the page. */
 .content {
-    height: 80vh;
+    height: 60vh;
     padding: 2rem;
+    padding-top: 20vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -180,4 +181,12 @@ main > article[data-status="becoming-active-from-before"] {
     height: 6rem;
     width: 6rem;
     margin: 1rem;
+}
+#result {
+    height: 20vh;
+    width: 100vw;
+    text-align: center;
+    padding: 3vh;
+    text-transform: capitalize;
+    font-size: 75px;
 }

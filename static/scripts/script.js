@@ -5,91 +5,105 @@ const body = document.querySelector('body');
 const button = document.querySelector('#record');
 //variable to track the state of center button
 let startState = true;
-
+let audioCtx;
 //main block for doing the audio recording
-
 if (navigator.mediaDevices.getUserMedia) {
-    console.log('getUserMedia supported.')
     const constraints = { audio: true };
     let chunks = [];
 
     let onSuccess = function(stream) {
-        const mediaRecorder = new MediaRecorder(stream);        
+        const mediaRecorder = new MediaRecorder(stream);       
+        
+        visualize(stream)
+        
         button.onclick = function() {
+            const recording = document.getElementById("record")
+            recording.classList.toggle("rec");
+            recording.classList.toggle("notRec");
             if (startState) {
                 mediaRecorder.start();
-                console.log(mediaRecorder.state);
                 console.log("recorder started");
-                body.style.backgroundColor = "#307D92";
-                button.style.backgroundColor = "#8BE451";
                 startState = false;
             } else {
                 mediaRecorder.stop();
-                console.log(mediaRecorder.state);
-                console.log("recorder stopped");
-                body.style.backgroundColor = "#8BE451"; //AEE13F
-                button.style.backgroundColor = "#318BB1";    
                 startState = true;
             }
         }
-        
         mediaRecorder.onstop = function(e) {
-            console.log("data available after MediaRecorder.stop() called.");
-            
             const blob = new Blob(chunks, { 'type' : 'audio/wav' });
             chunks = [];
-            const audioUrl = URL.createObjectURL(blob);
-            const audio = new Audio(audioUrl);
-            //audio.play();
             console.log("recorder stopped");
 
             let data = new FormData()
             data.append('file', blob , 'file')
 
-            fetch('http://127.0.0.1:8080/receive', {
+            fetch('http://localhost:8080/receive', {
                 method: 'POST',
                 body: data
-
             }).then(response => response.json()
             ).then(response => {
-                let para = document.createElement("p");
+                let result = document.getElementById("result");
                 let node = document.createTextNode(response);
-                para.appendChild(node);
-                para.setAttribute(
-                    'style',
-                    'font-size: 60px;color: #FFFFFF;justify-self:center',
-                );
-                
-                console.log(response)
+                if (result.firstChild) {
+                    result.removeChild(result.firstChild);
+                }
+                result.appendChild(node)
             });
-            
-
         }
-
         mediaRecorder.ondataavailable = function(e) {
             chunks.push(e.data);
         }
     }
 
     let onError = function(err) {
-        console.log('The following error occured: ' + err);
+        console.error('The following error occured: ' + err);
     }
 
     navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
 
 } else {
-    console.log('getUserMedia not supported on your browser!');
+    console.error('getUserMedia not supported on your browser!');
 }
+function visualize(stream) {
+    if(!audioCtx) {
+        audioCtx = new AudioContext();
+    }
 
-function record() {
-    const recording = document.getElementById("record")
-	recording.classList.toggle("rec");
-	recording.classList.toggle("notRec");
-	allVisualizers = document.getElementsByClassName("listener");
-	for (i = 0; i < allVisualizers.length; i++) {
-		randVal = Math.floor(Math.random() * 11 + 1)
-		allVisualizers.item(i).style.height = randVal.toString() + "vw"
-	};
+    const source = audioCtx.createMediaStreamSource(stream);
+
+    const analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 64;
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+    const visualizerArray = document.getElementsByClassName("listener");
+    source.connect(analyser);
+    renderFrame()
+    function renderFrame() {
+        // Update our frequency data array with the latest frequency data
+        analyser.getByteFrequencyData(dataArray);
+        for( let i = 0; i < bufferLength; i++ ) {
+            // Since the frequency data array is 1024 in length, we don't want to fetch
+            // the first NBR_OF_BARS of values, but try and grab frequencies over the whole spectrum
+            // fd is a frequency value between 0 and 255
+            const fd = dataArray[i];
+            // Fetch the bar DIV element
+            const visualizer = visualizerArray[i];
+            if( !visualizer ) {
+                continue;
+            }
+
+            // If fd is undefined, default to 0, then make sure fd is at least 4
+            // This will make make a quiet frequency at least 4px high for visual effects
+            const visualizerHeight = Math.floor(Math.max(5, fd || 0)/5);
+            visualizer.style.height = visualizerHeight + "vw";
+
+        }
+
+        // At the next animation frame, call ourselves
+        window.requestAnimationFrame(renderFrame);
+
+    }
+
 }
 
 
